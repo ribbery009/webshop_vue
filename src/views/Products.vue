@@ -1,29 +1,17 @@
 <template>
-  <div id="app" class="bg-secondary w-full">
-    <Header />
-    <Banner />
- 
-
-    <Footer />
-    <Cart v-if="cartOpen" />
+  <div id="products" class="bg-secondary w-full">  
+    <ProductList/>
   </div>
 </template>
 
 <script>
-import Header from '../components/Header.vue'
-import Banner from '../components/Banner.vue'
-import NewsList from '../components/NewsList.vue'
-import Footer from '../components/Footer.vue'
-import Cart from '../components/Cart.vue'
+
+import ProductList from '../components/ProductList.vue'
 
 export default {
   name: 'products',
   components: {
-    Header,
-    Banner,
-    NewsList,
-    Footer,
-    Cart,
+    ProductList,
   },
   data() {
     return {
@@ -31,7 +19,6 @@ export default {
       cartOpen: false,
     }
   },
-  // ... további logika és metódusok, mint például a hírek letöltése, a kosár megnyitása/zárása, stb.
 }
 </script>
 

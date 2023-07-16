@@ -10,7 +10,7 @@ export const useNewsStore = defineStore("news", {
     async fetchNews() {
       try {
         const response = await axios.get(
-          "https://mockup-api.marso.hu/news?page=1"
+          "https://mockup-api.marso.hu/news"
         );
         if (response.data && response.data["hydra:member"]) {
           this.news = response.data["hydra:member"] as News[];

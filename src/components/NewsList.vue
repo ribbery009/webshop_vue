@@ -1,5 +1,11 @@
 <template>
   <div class="flex gap-4 container justify-center mx-auto my-4 lg:my-8">
+    <div
+      v-if="news.length === 0"
+      class="text-center py-8 w-full"
+    >
+      <p class="text-gray-500">Nincs megjeleníthető elem.</p>
+    </div>
     <div class="masonry w-3/4 gap-4">
       <div v-for="item in news" :key="item.id" class="masonry-item">
         <news-item

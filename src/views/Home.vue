@@ -1,28 +1,21 @@
 <template>
   <div class="bg-secondary w-full">
-    <Header />
     <Banner />
     <NewsList :news="news" />
-    <Footer />
-    <Cart v-if="cartOpen" />
   </div>
 </template>
 
 <script>
-import Header from '../components/Header.vue'
+
 import Banner from '../components/Banner.vue'
 import NewsList from '../components/NewsList.vue'
-import Footer from '../components/Footer.vue'
-import Cart from '../components/Cart.vue'
+
 
 export default {
   name: 'Home',
-  components: {
-    Header,
+  components: { 
     Banner,
     NewsList,
-    Footer,
-    Cart,
   },
   data() {
     return {
