@@ -1,14 +1,12 @@
 <template>
   <transition name="fade">
     <div
-      class="fixed inset-0 z-50 flex items-center justify-center overflow-auto text-black bg-black bg-opacity-50"
-      v-if="isModalOpen"
-    >
+    class="fixed inset-0 z-50 flex items-center justify-center overflow-auto text-black bg-black bg-opacity-50">
       <div class="relative bg-white rounded-lg px-4 pt-5 pb-4 sm:max-w-sm sm:w-full sm:p-6">
         <button
           type="button"
-          class="absolute top-0 right-0 p-1 transition-opacity duration-150 ease-in-out bg-white rounded-full hover:text-gray-500 sm:p-2"
-          @click="closeModal"
+          class="absolute top-0 right-0 p-1 border-none duration-150 ease-in-out transition-all  rounded-full hover:bg-gray-200 sm:p-2"
+          @click="$emit('close-modal')"
         >
           <svg
             class="w-6 h-6 text-gray-400"
@@ -25,14 +23,14 @@
           </svg>
         </button>
         <div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Your Cart</h3>
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Kosár</h3>
           <ul>
             <li
               v-for="item in cartItems"
               :key="item.productId"
               class="my-2"
             >
-              <div>{{ item.productName }}</div>
+              <div>{{ item.width }}</div>
               <div>{{ item.quantity }}</div>
             </li>
           </ul>
@@ -54,25 +52,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import { useCartStore } from '../store/cart';
 
 const cartStore = useCartStore();
 const cartItems = cartStore.cartItems;
-const isModalOpen = ref(false);
-
-const openModal = () => {
-  isModalOpen.value = true;
-};
-
-const closeModal = () => {
-  isModalOpen.value = false;
-};
 
 const checkout = () => {
   // Implement checkout logic here
 };
 </script>
+
 
 <style scoped>
 .fade-enter-active,

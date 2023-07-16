@@ -6,13 +6,19 @@
 </template>
 
 <script lang="ts">
-import { onMounted, ref } from "vue";
-import { useProductsStore } from "../store/products";
+import { inject, onMounted, ref } from "vue";
 import { toast } from "vue3-toastify";
+
+//
+import { useProductsStore } from "../store/products";
+import { usePossibleStore } from "../store/possibleValues";
+
+//
 import { TableHeader, TableRow } from "../lib/types/table";
 import { Product } from "../lib/types/product";
+//
+
 import Table from "./table/Table.vue";
-import { usePossibleStore } from "../store/possibleValues";
 import Filter from "./Filter.vue";
 
 export default {
@@ -26,9 +32,11 @@ export default {
     const rows = ref<TableRow[]>([]);
 
     const possibleStore = usePossibleStore();
-    const myFilterOptions = ref({});
+    const loadingStore = inject('loadingStore');
+        const myFilterOptions = ref({});
 
     const loadOptions = async () => {
+      loadingStore.setLoading(true);
       try {
         const params = [
           "season",
@@ -49,6 +57,10 @@ export default {
           error
         );
       }
+      finally {
+        loadingStore.setLoading(false);
+      }
+     
     };
     onMounted(() => {
       loadOptions();
@@ -56,6 +68,7 @@ export default {
 
     const loadProducts = async () => {
       try {
+        loadingStore.setLoading(true);
         products.value = await productsStore.fetchProducts();
         rows.value = products.value.map((product: Product) => ({
           id: product.id,
@@ -106,6 +119,9 @@ export default {
         }));
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
+      }
+      finally {
+        loadingStore.setLoading(false);
       }
     };
 

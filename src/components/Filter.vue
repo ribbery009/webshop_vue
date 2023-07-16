@@ -45,6 +45,7 @@
 
 <script lang="ts">
 import { ref, watch, toRefs } from "vue";
+//
 import { getHungarianLabel } from "../lib/utils/getHungarianLabel";
 
 export default {

@@ -23,6 +23,7 @@
 
 <script>
 import { ref, computed, watch } from "vue";
+//
 import TableHeader from "./TableHeader.vue";
 import TableCell from "./TableCell.vue";
 import TableFooter from "./TableFooter.vue";

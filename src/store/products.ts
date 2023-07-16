@@ -20,5 +20,10 @@ export const useProductsStore = defineStore("products", {
         throw error;
       }
     },
+    getProductById(id: string) {
+      console.log(this.products);
+      console.log(id);
+      return this.products.find((product) => String(product.id) === id);
+    }
   },
 });

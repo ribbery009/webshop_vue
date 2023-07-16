@@ -31,7 +31,10 @@
 
 <script setup>
 import { computed } from 'vue';
+//
 import { useCartStore } from '../../store/cart';
+import { useProductsStore } from '../../store/products';
+
 
 const props = defineProps({
   column: {
@@ -46,12 +49,37 @@ const props = defineProps({
 });
 
 const cartStore = useCartStore();
+const productsStore = useProductsStore();
 
 const quantity = computed(() => cartStore.getQuantity(props.column.value));
 
-const addToCart = (productId) => {
-  cartStore.addProductToCart(productId);
-}
+const addToCart = async (productId) => {
+
+  if (!productsStore.products.length) {
+    await productsStore.fetchProducts();
+  }
+
+  const product = productsStore.getProductById(productId);
+
+  console.log(product);
+  // Check if product exists
+  if (!product) {
+    console.error(`Product with ID ${productId} not found`);
+    return;
+  }
+
+
+ cartStore.addProductToCart({
+    productId: product.id,
+    brand: product.brand,
+    tread: product.tread,
+    width: product.width,
+    profile: product.profile,
+    diameter: product.diameter,
+    price: product.price,
+  });
+};
+
 
 const removeFromCart = (productId) => {
   cartStore.removeProductFromCart(productId);

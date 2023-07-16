@@ -23,9 +23,11 @@
 </template>
 
 <script>
-import { ref, watchEffect } from "vue";
-import { useNewsStore } from "../store/news";
+import { ref, watchEffect,inject } from "vue";
 import { toast } from "vue3-toastify";
+//
+import { useNewsStore } from "../store/news";
+//
 import ImageCard from "./ImageCard.vue";
 import NewsItem from "./NewsItem.vue";
 
@@ -37,10 +39,13 @@ export default {
   },
   setup() {
     const newsStore = useNewsStore();
+    const loadingStore = inject('loadingStore');
     const news = ref([]);
 
     const loadNews = async () => {
       try {
+        loadingStore.setLoading(true);
+
         await newsStore.fetchNews();
         const sortedNews = [...newsStore.$state.news];
         sortedNews.sort(
@@ -49,6 +54,9 @@ export default {
         news.value = sortedNews;
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
+      }
+      finally {
+        loadingStore.setLoading(false);
       }
     };
 

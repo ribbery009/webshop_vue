@@ -38,14 +38,18 @@
         </span>
         </button>
       </div>
+    
     </div>
   </div>
 </template>
 
 
 <script setup>
-import { useCartStore } from '../store/cart';
 import { computed,defineEmits } from 'vue';
+//
+import { useCartStore } from '../store/cart';
+//
+
 
 const cartStore = useCartStore();
 const cartItemCount = computed(() => cartStore.getTotalQuantity());
@@ -57,4 +61,5 @@ function emitToggleCart() {
 </script>
 
 <style scoped>
+
 </style>

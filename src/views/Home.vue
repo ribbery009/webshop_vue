@@ -1,32 +1,49 @@
 <template>
-  <div class="bg-secondary w-full">
-    <Banner />
-    <NewsList :news="news" />
+  <div>
+    <Banner :banner="banner"/>
+    <NewsList />
   </div>
 </template>
 
 <script>
+import { ref } from 'vue';
 
-import Banner from '../components/Banner.vue'
-import NewsList from '../components/NewsList.vue'
+//
+import { useBannerStore } from '../store/banner';
+import { useLoadingStore } from '../store/loading';
+//
+
+import Banner from '../components/Banner.vue';
+import NewsList from '../components/NewsList.vue';
 
 
 export default {
   name: 'Home',
-  components: { 
+  components: {
     Banner,
     NewsList,
   },
-  data() {
-    return {
-      news: [],
-      cartOpen: false,
-    }
-  },
-  // ... további logika és metódusok, mint például a hírek letöltése, a kosár megnyitása/zárása, stb.
-}
-</script>
+  setup() {
+    const bannerStore = useBannerStore();
+    const loadingStore = useLoadingStore();
+    const banner = ref({});
 
-<style>
-/* Itt hozzáadhatod a színeket, gap-et és egyéb globális stílusokat */
-</style>
+    const loadBanner = async () => {
+      try {
+        loadingStore.setLoading(true);
+        await bannerStore.fetchBanner();
+        banner.value = bannerStore.$state.banner;
+      } catch (error) {
+        console.error('Hiba történt a banner letöltése közben:', error);
+      }
+      finally {
+        loadingStore.setLoading(false);
+      }
+    };
+
+    loadBanner();
+
+    return { banner };
+  },
+};
+</script>
