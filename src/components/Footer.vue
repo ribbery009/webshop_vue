@@ -51,14 +51,6 @@
             </a>
           </div>
 
-          <!-- Feltételezem, hogy itt valami form kerül behelyezésre: -->
-          <button type="button" class="mt-4">
-            <img
-              class="h-8"
-              src="/extensions/local/marso/newsletter/newsletter-footer-button-hu_HU.png"
-              alt=""
-            />
-          </button>
         </div>
       </div>
     </div>

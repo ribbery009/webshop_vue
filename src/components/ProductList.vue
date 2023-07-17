@@ -20,6 +20,7 @@ import { Product } from "../lib/types/product";
 
 import Table from "./table/Table.vue";
 import Filter from "./Filter.vue";
+import { LoadingStore } from "../store/loading";
 
 export default {
   components: {
@@ -32,8 +33,8 @@ export default {
     const rows = ref<TableRow[]>([]);
 
     const possibleStore = usePossibleStore();
-    const loadingStore = inject('loadingStore') as LoadingStore;
-        const myFilterOptions = ref({});
+    const loadingStore = inject("loadingStore") as LoadingStore;
+    const myFilterOptions = ref({});
 
     const loadOptions = async () => {
       loadingStore.setLoading(true);
@@ -56,11 +57,9 @@ export default {
           "Hiba történt a lehetséges opciók betöltése közben:",
           error
         );
-      }
-      finally {
+      } finally {
         loadingStore.setLoading(false);
       }
-     
     };
     onMounted(() => {
       loadOptions();
@@ -101,6 +100,7 @@ export default {
               type: "text",
               label: product.price,
               value: product.price,
+              postFix: " Ft",
             },
             {
               name: "stock",
@@ -119,8 +119,7 @@ export default {
         }));
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
-      }
-      finally {
+      } finally {
         loadingStore.setLoading(false);
       }
     };
@@ -166,6 +165,7 @@ export default {
             type: "text",
             label: product.price,
             value: product.price,
+            postFix: " Ft",
           },
           {
             name: "stock",
@@ -173,6 +173,13 @@ export default {
             label: product.stock,
             value: product.stock,
           },
+          {
+              name: "action",
+              type: "action",
+              label: "",
+              sortable: false,
+              value: product.id,
+            },
         ],
       }));
     };

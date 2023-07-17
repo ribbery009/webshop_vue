@@ -3,12 +3,14 @@ import { defineStore } from 'pinia';
 export type LoadingStore = {
   isLoading: boolean;
   loadStartTime: number;
+  setLoading: (value: boolean) => void;
 };
 
 export const useLoadingStore = defineStore('loading', {
   state: () : LoadingStore => ({
     isLoading: false as boolean,
     loadStartTime: Date.now(),
+    setLoading: (value: boolean) => {},
   }),
   actions: {
     setLoading(value : boolean) {

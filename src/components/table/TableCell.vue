@@ -5,16 +5,12 @@
       {{mobileLabel }}
     </span>
     <span class="flex justify-end items-center text-tertiary font-semibold">
-      {{ column.label }}
+      {{ column.label.toLocaleString()}}<span v-if="column.postFix">{{column.postFix}}</span>
     </span>   
     </div>
    
-    <img
-      v-else-if="column.type === 'image'"
-      :src="column.value"
-      alt=""
-      class="max-w-[100px] max-h-[80px] rounded-full"
-    />
+    <Image  v-else-if="column.type === 'image'" className="max-w-[100px] max-h-[80px] rounded-full" :src="column.value" alt="" />
+
     <div v-else-if="column.type === 'action'" class="flex"> 
       <div class="flex justify-center items-center">
         <button
@@ -40,6 +36,8 @@ import { computed } from 'vue';
 //
 import { useCartStore } from '../../store/cart';
 import { useProductsStore } from '../../store/products';
+//
+import Image from '../Image.vue';
 
 
 const props = defineProps({
@@ -59,6 +57,7 @@ const props = defineProps({
   },
 });
 
+console.log(props.column)
 const cartStore = useCartStore();
 const productsStore = useProductsStore();
 
@@ -80,15 +79,21 @@ const addToCart = async (productId) => {
   }
 
 
- cartStore.addProductToCart({
-    productId: product.id,
-    brand: product.brand,
-    tread: product.tread,
-    width: product.width,
-    profile: product.profile,
-    diameter: product.diameter,
-    price: product.price,
-  });
+
+  try {
+    cartStore.addProductToCart({
+      productId: product.id,
+      brand: product.brand,
+      tread: product.tread,
+      width: product.width,
+      profile: product.profile,
+      diameter: product.diameter,
+      price: product.price,
+    });
+    console.log(`Product with ID ${productId} added to cart successfully.`);
+  } catch (error) {
+    console.error("Error while adding product to cart: ", error);
+  }
 };
 
 

@@ -1,13 +1,17 @@
 <template>
   <div class="bg-primary flex items-center h-20 px-4  relative">    
   <div class="flex container mx-auto items-center">
-      <a class="h-12 py-2 mr-4 cursor-pointer flex items-center">
-        <img
+   
+      <router-link
+            to="/"
+            class="h-12 py-2 mr-4 cursor-pointer flex items-center"
+          >
+          <img
           class="h-12"
           src="https://www.marso.hu/theme/marso/assets/images/marso-logo-horizontal.svg"
           alt="Logo"
         />
-      </a>
+          </router-link>
 
       <div class="flex justify-between w-full h-full">
         <div class="flex">

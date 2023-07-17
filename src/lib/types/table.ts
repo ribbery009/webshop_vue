@@ -9,9 +9,10 @@ export interface TableHeader{
 
 export interface TableCell{
     name: string,
-    type: "image" | "text",
+    type: "image" | "text" | 'price' | 'action',
     value: any,
     label: any,
+    postfix?: string,
 }
 
 export interface TableRow{

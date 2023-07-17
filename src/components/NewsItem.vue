@@ -1,6 +1,6 @@
 <template>
   <div class="news-item col-span-1 bg-white shadow rounded overflow-hidden">
-        <img class="w-full h-48 object-cover" :src="item.image" alt="Hír kép">
+        <Image className="w-full h-48 object-cover" :src="item.image" alt="Hír kép" />
         <div class="p-4">
           <h2 class="font-bold text-xl mb-2">{{ item.title }}</h2>
           <div class="text-gray-700 text-base" v-html="item.description"></div>
@@ -10,9 +10,13 @@
 </template>
 <script lang="ts" >
 import { News } from "../lib/types/news";
+import Image from "./Image.vue";
 
 export default {
   name: 'NewsItem',
+  components: {
+    Image
+  },
   props: {
     item: {
       type: Object as () => News,

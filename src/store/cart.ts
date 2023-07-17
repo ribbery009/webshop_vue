@@ -12,14 +12,22 @@ interface CartItem {
   price: number;
 }
 
-export const useCartStore = defineStore('cart', {
+export const useCartStore = defineStore("cart", {
   state: () => ({
-    cartItems: [] as CartItem[]
+    cartItems: [] as CartItem[],
   }),
   actions: {
-    addProductToCart({ productId, brand, tread, width, profile, diameter, price }: CartItem) {
-      const item = this.cartItems.find(item => item.productId === productId);
-    
+    addProductToCart({
+      productId,
+      brand,
+      tread,
+      width,
+      profile,
+      diameter,
+      price,
+    }: CartItem) {
+      const item = this.cartItems.find((item) => item.productId === productId);
+
       if (item) {
         item.quantity++;
       } else {
@@ -31,26 +39,37 @@ export const useCartStore = defineStore('cart', {
           width,
           profile,
           diameter,
-          price
+          price,
         });
       }
     },
     removeProductFromCart(productId: string) {
-      const item = this.cartItems.find(item => item.productId === productId);
-    
+      const item = this.cartItems.find((item) => item.productId === productId);
+
       if (item) {
         if (item.quantity > 1) {
           item.quantity--;
         } else {
-          this.cartItems = this.cartItems.filter(item => item.productId !== productId);
+          this.cartItems = this.cartItems.filter(
+            (item) => item.productId !== productId
+          );
         }
       }
     },
     getQuantity(productId: string) {
-      const item = this.cartItems.find(item => item.productId === productId);
+      const item = this.cartItems.find((item) => item.productId === productId);
       return item ? item.quantity : 0;
     },
     getTotalQuantity() {
-      return this.cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;    }
-  }
+      return this.cartItems?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+    },
+    getTotalPrice() {
+      return (
+        this.cartItems?.reduce(
+          (acc, item) => acc + item.quantity * item.price,
+          0
+        ) || 0
+      );
+    },
+  },
 });
