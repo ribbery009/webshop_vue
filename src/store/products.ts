@@ -21,7 +21,6 @@ export const useProductsStore = defineStore("products", {
       }
     },
     getProductById(id: number) {
-      console.log(id);
       return this.products.find((product) => product.id == id);
     }
   },

@@ -10,9 +10,6 @@ export const useLoadingStore = defineStore('loading', {
   state: () : LoadingStore => ({
     isLoading: false as boolean,
     loadStartTime: Date.now(),
-    setLoading: (value: boolean) => {},
-  }),
-  actions: {
     setLoading(value : boolean) {
       if (value) {
         // Start loading: set isLoading to true and record start time
@@ -25,5 +22,5 @@ export const useLoadingStore = defineStore('loading', {
         setTimeout(() => { this.isLoading = value; }, remaining);
       }
     },
-  },
+  }),
 });

@@ -1,4 +1,5 @@
 export type Product = {
+  [key: string]: any;
   id: number,
       type: string,
       context: string,

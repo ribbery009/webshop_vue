@@ -1,9 +1,8 @@
 <template>
-  <div class="flex gap-4 container justify-center px-4 md:px-0 mx-auto my-4 lg:my-8">
-    <div
-      v-if="news.length === 0"
-      class="text-center py-8 w-full"
-    >
+  <div
+    class="flex gap-4 container justify-center px-4 md:px-0 mx-auto my-4 lg:my-8"
+  >
+    <div v-if="news.length === 0" class="text-center py-8 w-full">
       <p class="text-gray-500">Nincs megjeleníthető elem.</p>
     </div>
     <div class="masonry w-full lg:w-3/4 gap-4">
@@ -16,30 +15,34 @@
     </div>
     <div class="w-full lg:w-1/4 hidden lg:block">
       <div v-for="(item, index) in news" :key="`img-${index}`">
-        <image-card src="https://picsum.photos/200/300" />
+        <div
+          class="image-card col-span-1 bg-white shadow rounded overflow-hidden"
+        >
+          <Image src="https://picsum.photos/600/300" alt="Random kép" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { ref, watchEffect,inject } from "vue";
+import { ref, watchEffect, inject } from "vue";
 import { toast } from "vue3-toastify";
 //
 import { useNewsStore } from "../store/news";
 //
-import ImageCard from "./ImageCard.vue";
 import NewsItem from "./NewsItem.vue";
+import Image from "./Image.vue";
 
 export default {
   name: "NewsList",
   components: {
-    ImageCard,
     NewsItem,
+    Image,
   },
   setup() {
     const newsStore = useNewsStore();
-    const loadingStore = inject('loadingStore');
+    const loadingStore = inject("loadingStore");
     const news = ref([]);
 
     const loadNews = async () => {
@@ -53,11 +56,10 @@ export default {
         );
         news.value = sortedNews;
 
-        console.log(loadingStore.isLoading)
+        console.log(loadingStore.isLoading);
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
-      }
-      finally {
+      } finally {
         loadingStore.setLoading(false);
       }
     };
@@ -74,14 +76,20 @@ export default {
 <style scoped>
 .masonry {
   column-count: 1;
+}
 
-  @media (min-width: 1024px) {
+@media (min-width: 1024px) {
+  .masonry {
     column-count: 2;
   }
-  @media (min-width: 1280px) {
+}
+
+@media (min-width: 1280px) {
+  .masonry {
     column-count: 3;
   }
 }
+
 .masonry-item {
   break-inside: avoid;
   margin-bottom: 16px;

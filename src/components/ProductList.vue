@@ -173,13 +173,14 @@ export default {
             label: product.stock,
             value: product.stock,
           },
-          {
+           {
               name: "action",
               type: "action",
               label: "",
               sortable: false,
               value: product.id,
             },
+
         ],
       }));
     };

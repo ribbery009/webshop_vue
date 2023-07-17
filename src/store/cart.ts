@@ -1,4 +1,3 @@
-import { get } from "@vueuse/core";
 import { defineStore } from "pinia";
 
 interface CartItem {
@@ -71,5 +70,10 @@ export const useCartStore = defineStore("cart", {
         ) || 0
       );
     },
+    clearCart() {
+      this.cartItems = [];
+    }
+
   },
+
 });

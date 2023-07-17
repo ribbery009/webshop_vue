@@ -10,9 +10,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": false,
+    "noEmit": true,
     "jsx": "preserve",
-
+    "allowJs": true,
+  
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
@@ -21,10 +22,6 @@
     "types": [
       "vue3-toastify/global",
       "vite/client",
-      "vite-plugin-pages/client",
-      "vite-plugin-vue-layouts/client",
-      "vite-plugin-windicss/client",
-      "vite-plugin-components",
       "vue"
     ]
   },
