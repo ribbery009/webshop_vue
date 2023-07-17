@@ -23,8 +23,19 @@
           </svg>
         </button>
         <div>
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Kosár</h3>
+          <h3 class="text-lg leading-6 font-bold text-gray-900">Kosár</h3>
           <ul>
+            <div class="mt-8 text-lg font-normal" v-if="cartItems.length == 0">
+              Az ön kosara jelenleg üres.
+              <router-link
+            to="/products"
+            @click="$emit('close-modal')"
+            class="py-2 flex flex-col items-center mt-4 transition-all justify-center text-tertiary bg-secondary hover:bg-red-700 rounded-md mr-4 px-4 cursor-pointer hover:text-white text-sm "
+          >
+            <i class="fas fa-shopping-cart text-lg"></i>
+            Tovább a termékekhez
+          </router-link>
+            </div>
             <li
               v-for="item in cartItems"
               :key="item.productId"
@@ -34,7 +45,7 @@
               <div>{{ item.quantity }}</div>
             </li>
           </ul>
-          <div class="mt-5 sm:mt-6">
+          <div class="mt-5 sm:mt-6" v-if="cartItems.length > 0">
             <span class="flex w-full rounded-md shadow-sm">
               <button
                 @click="checkout"

@@ -1,5 +1,5 @@
 <template>
-  <div class="container flex py-8 mx-auto flex-col">
+  <div class="container flex px-4 md:px-0 py-8 mx-auto flex-col">
     <Filter :filterOptions="myFilterOptions" @updateFilter="applyFilter" />
     <Table :rows="rows" :headers="header" />
   </div>
@@ -32,7 +32,7 @@ export default {
     const rows = ref<TableRow[]>([]);
 
     const possibleStore = usePossibleStore();
-    const loadingStore = inject('loadingStore');
+    const loadingStore = inject('loadingStore') as LoadingStore;
         const myFilterOptions = ref({});
 
     const loadOptions = async () => {

@@ -1,8 +1,14 @@
 <template>
   <div :style="{ width: width }" class="flex justify-center">
-    <span v-if="column.type === 'text'" class="flex justify-end items-center">
-      {{ column.label }}
+    <div v-if="column.type === 'text'" class="flex w-full justify-between px-4 md:px-0 md:justify-center"> 
+      <span class="flex justify-end items-center text-tertiary font-bold">
+      {{mobileLabel }}
     </span>
+    <span class="flex justify-end items-center text-tertiary font-semibold">
+      {{ column.label }}
+    </span>   
+    </div>
+   
     <img
       v-else-if="column.type === 'image'"
       :src="column.value"
@@ -17,10 +23,10 @@
         >
           <i class="fas fa-minus"></i>
         </button>
-        <span class="mx-2">{{ quantity }}</span>
+        <span class="mx-2 text-tertiary">{{ quantity }}</span>
         <button
           @click="addToCart(column.value)"
-          class="bg-primary text-white rounded-full w-8 h-10 flex justify-center items-center transition-all hover:bg-red-700 border-none"
+          class="bg-primary rounded-full w-8 h-10 flex justify-center items-center transition-all hover:bg-red-700 border-none"
         >
           <i class="fas fa-plus"></i>
         </button>
@@ -46,6 +52,11 @@ const props = defineProps({
     required: false,
     default: "auto",
   },
+  mobileLabel: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const cartStore = useCartStore();
@@ -53,6 +64,7 @@ const productsStore = useProductsStore();
 
 const quantity = computed(() => cartStore.getQuantity(props.column.value));
 
+const mobileLabels = computed(() => props.mobileLabel)
 const addToCart = async (productId) => {
 
   if (!productsStore.products.length) {
@@ -61,7 +73,6 @@ const addToCart = async (productId) => {
 
   const product = productsStore.getProductById(productId);
 
-  console.log(product);
   // Check if product exists
   if (!product) {
     console.error(`Product with ID ${productId} not found`);

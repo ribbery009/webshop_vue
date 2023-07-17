@@ -1,12 +1,12 @@
 <template>
-  <div class="flex gap-4 container justify-center mx-auto my-4 lg:my-8">
+  <div class="flex gap-4 container justify-center px-4 md:px-0 mx-auto my-4 lg:my-8">
     <div
       v-if="news.length === 0"
       class="text-center py-8 w-full"
     >
       <p class="text-gray-500">Nincs megjeleníthető elem.</p>
     </div>
-    <div class="masonry w-3/4 gap-4">
+    <div class="masonry w-full lg:w-3/4 gap-4">
       <div v-for="item in news" :key="item.id" class="masonry-item">
         <news-item
           :item="item"
@@ -14,7 +14,7 @@
         />
       </div>
     </div>
-    <div class="w-1/4">
+    <div class="w-full lg:w-1/4 hidden lg:block">
       <div v-for="(item, index) in news" :key="`img-${index}`">
         <image-card src="https://picsum.photos/200/300" />
       </div>
@@ -52,6 +52,8 @@ export default {
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         news.value = sortedNews;
+
+        console.log(loadingStore.isLoading)
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
       }
@@ -71,7 +73,14 @@ export default {
 
 <style scoped>
 .masonry {
-  column-count: 3;
+  column-count: 1;
+
+  @media (min-width: 1024px) {
+    column-count: 2;
+  }
+  @media (min-width: 1280px) {
+    column-count: 3;
+  }
 }
 .masonry-item {
   break-inside: avoid;

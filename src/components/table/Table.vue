@@ -1,16 +1,14 @@
 <template>
   <div class="w-full">
     <TableHeader
+      v-if="!isMobile"
       :headers="headers"
       :columnWidths="columnWidths"
       @sortTable="handleSortTable"
       :currentIsAscending="isAscending"
       :currentSortedColumn="sortedColumn"
     />
-    <TableRow
-      :rows="currentPageRows"
-      :columnWidths="columnWidths"
-    />
+    <TableRow :rows="currentPageRows" :columnWidths="columnWidths" :headers="isMobile ? headers : []"/>
     <TableFooter
       :page="page"
       :totalPages="totalPages"
@@ -28,6 +26,7 @@ import TableHeader from "./TableHeader.vue";
 import TableCell from "./TableCell.vue";
 import TableFooter from "./TableFooter.vue";
 import TableRow from "./TableRow.vue";
+import { useWindowSize } from '@vueuse/core';
 
 export default {
   components: {
@@ -53,14 +52,22 @@ export default {
     const sortedColumn = ref(null);
     const isAscending = ref(true);
 
+    const { width } = useWindowSize();
+
+    const isMobile = computed(() => width.value < 768);
+
     const sortedRows = computed(() => {
       const rows = [...props.rows];
 
       if (sortedColumn.value) {
         rows.sort((a, b) => {
-          const aCell = a.cells.find((cell) => cell.name === sortedColumn.value);
+          const aCell = a.cells.find(
+            (cell) => cell.name === sortedColumn.value
+          );
           const aValue = aCell ? aCell.value : undefined;
-          const bCell = b.cells.find((cell) => cell.name === sortedColumn.value);
+          const bCell = b.cells.find(
+            (cell) => cell.name === sortedColumn.value
+          );
           const bValue = bCell ? bCell.value : undefined;
 
           if (aValue && bValue) {
@@ -74,9 +81,13 @@ export default {
       return rows;
     });
 
-    const totalPages = computed(() => Math.ceil(sortedRows.value.length / rowsPerPage.value));
+    const totalPages = computed(() =>
+      Math.ceil(sortedRows.value.length / rowsPerPage.value)
+    );
 
-    const columnWidths = computed(() => props.headers.map((header) => header.width));
+    const columnWidths = computed(() =>
+      props.headers.map((header) => header.width)
+    );
 
     const currentPageRows = computed(() => {
       const start = (page.value - 1) * rowsPerPage.value;
@@ -105,7 +116,6 @@ export default {
       page.value = newPage;
     };
 
-
     return {
       page,
       totalPages,
@@ -117,6 +127,7 @@ export default {
       isAscending,
       handleSortTable,
       changePage,
+      isMobile,
     };
   },
 };

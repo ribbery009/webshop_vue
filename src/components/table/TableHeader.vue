@@ -12,8 +12,8 @@
           :style="column.sortable ? 'cursor: pointer;' : 'cursor: default;'"
         >
           {{ column.label }}
-          <span v-if="currentSortedColumn === column.name">
-            <span v-if="currentIsAscending">{{'↑'}}</span>
+          <span v-if="sortedColumn === column.name">
+            <span v-if="isAscending">{{'↑'}}</span>
             <span v-else>{{'↓'}}</span>
           </span>
         </div>
@@ -22,54 +22,47 @@
   </div>
 </template>
 
-<script>
-export default {
-  props: {
-    headers: {
-      type: Array,
-      default: () => [],
-    },
-    columnWidths: {
-      type: Array,
-      default: () => [],
-    },
-    currentSortedColumn: {
-      type: String,
-      default: null,
-    },
-    currentIsAscending: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  data() {
-    return {
-      sortedColumn: this.currentSortedColumn,
-      isAscending: this.currentIsAscending,
-    };
-  },
-  methods: {
-    sortTable(columnName) {
-      if (this.sortedColumn === columnName) {
-        this.isAscending = !this.isAscending;
-      } else {
-        this.sortedColumn = columnName;
-        this.isAscending = true;
-      }
+<script setup>
+import { ref, watchEffect } from 'vue';
 
-      this.$emit('sortTable', {
-        columnName: this.sortedColumn,
-        isAscending: this.isAscending,
-      });
-    },
+const props = defineProps({
+  headers: {
+    type: Array,
+    default: () => [],
   },
-  watch: {
-    currentSortedColumn(newVal) {
-      this.sortedColumn = newVal;
-    },
-    currentIsAscending(newVal) {
-      this.isAscending = newVal;
-    },
+  columnWidths: {
+    type: Array,
+    default: () => [],
   },
+  currentSortedColumn: {
+    type: String,
+    default: null,
+  },
+  currentIsAscending: {
+    type: Boolean,
+    default: true,
+  },
+});
+
+let sortedColumn = ref(props.currentSortedColumn);
+let isAscending = ref(props.currentIsAscending);
+
+const sortTable = (columnName) => {
+  if (sortedColumn.value === columnName) {
+    isAscending.value = !isAscending.value;
+  } else {
+    sortedColumn.value = columnName;
+    isAscending.value = true;
+  }
+
+  emit('sortTable', {
+    columnName: sortedColumn.value,
+    isAscending: isAscending.value,
+  });
 };
+
+watchEffect(() => {
+  sortedColumn.value = props.currentSortedColumn;
+  isAscending.value = props.currentIsAscending;
+});
 </script>

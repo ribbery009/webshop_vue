@@ -13,7 +13,6 @@ export const usePossibleStore = defineStore("possible-values", {
           this.options[param] = response.data["values"];
         }
 
-        console.log
       } catch (error) {
         throw error;
       }

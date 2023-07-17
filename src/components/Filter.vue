@@ -1,5 +1,5 @@
 <template>
-  <div class="flex gap-8 p-4 w-full bg-white mb-4 rounded-md">
+  <div class="flex flex-wrap gap-4 lg:gap-8 p-4 w-full bg-white mb-4 rounded-md">
     <div
       v-for="(options, key) in filterOptions"
       :key="key"
@@ -12,7 +12,7 @@
         <select
           v-model="selectedFilters[key]"
           @change="updateFilter"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-8"
+          class="shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline pr-8"
         >
           <option value="">Összes</option>
           <option v-for="option in options" :value="option" :key="option">
@@ -20,7 +20,7 @@
           </option>
         </select>
         <div
-          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+          class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2"
         >
           <svg
             class="fill-current h-4 w-4"
@@ -59,7 +59,6 @@ export default {
     const { filterOptions } = toRefs(props);
     const selectedFilters = ref({});
 
-    console.log(filterOptions.value);
     watch(filterOptions, (newVal) => {
       selectedFilters.value = Object.keys(newVal).reduce((acc, key) => {
         acc[key] = "";
