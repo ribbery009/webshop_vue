@@ -8,7 +8,11 @@
       :currentIsAscending="isAscending"
       :currentSortedColumn="sortedColumn"
     />
-    <TableRow :rows="currentPageRows" :columnWidths="columnWidths" :headers="isMobile ? headers : []"/>
+    <TableRow
+      :rows="currentPageRows"
+      :columnWidths="columnWidths"
+      :headers="isMobile ? headers : []"
+    />
     <TableFooter
       :page="page"
       :totalPages="totalPages"
@@ -20,13 +24,14 @@
 </template>
 
 <script>
-import { ref, computed, watch } from "vue";
+import { ref, computed, watch, inject } from "vue";
 //
 import TableHeader from "./TableHeader.vue";
 import TableCell from "./TableCell.vue";
 import TableFooter from "./TableFooter.vue";
 import TableRow from "./TableRow.vue";
-import { useWindowSize } from '@vueuse/core';
+import { useWindowSize } from "@vueuse/core";
+import { useProductsStore } from "../../store/products";
 
 export default {
   components: {
@@ -56,10 +61,18 @@ export default {
 
     const isMobile = computed(() => width.value < 768);
 
+    const sortOrder = ref({});
+
+    const productStore = inject("productStore");
+
     const sortedRows = computed(() => {
       const rows = [...props.rows];
 
-      if (sortedColumn.value) {
+      if (
+        sortedColumn.value &&
+        sortedColumn.value !== "stock" &&
+        sortedColumn.value !== "price"
+      ) {
         rows.sort((a, b) => {
           const aCell = a.cells.find(
             (cell) => cell.name === sortedColumn.value
@@ -95,7 +108,13 @@ export default {
       return sortedRows.value.slice(start, end);
     });
 
-    const handleSortTable = ({ columnName, isAscending: ascending }) => {
+    const handleSortTable = async ({ columnName, isAscending: ascending }) => {
+      if (columnName === "stock" || columnName === "price") {
+        sortOrder.value[columnName] =
+          sortOrder.value[columnName] === "asc" ? "desc" : "asc";
+        await productStore.fetchProducts(sortOrder.value);
+      }
+
       sortedColumn.value = columnName;
       isAscending.value = ascending;
     };

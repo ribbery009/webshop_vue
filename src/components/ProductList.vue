@@ -1,12 +1,12 @@
 <template>
   <div class="container flex px-4 md:px-0 py-8 mx-auto flex-col">
     <Filter :filterOptions="myFilterOptions" @updateFilter="applyFilter" />
-    <Table :rows="rows" :headers="header" />
+    <Table :rows="rows" :headers="header" :product-store="productsStore" />
   </div>
 </template>
 
 <script lang="ts">
-import { inject, onMounted, ref } from "vue";
+import { inject, onMounted, ref, watch,provide } from "vue";
 import { toast } from "vue3-toastify";
 
 //
@@ -21,6 +21,7 @@ import { Product } from "../lib/types/product";
 import Table from "./table/Table.vue";
 import Filter from "./Filter.vue";
 import { LoadingStore } from "../store/loading";
+import { createRows } from "../lib/const/createProductRows";
 
 export default {
   components: {
@@ -36,6 +37,15 @@ export default {
     const loadingStore = inject("loadingStore") as LoadingStore;
     const myFilterOptions = ref({});
 
+    provide("productStore", productsStore);
+
+    watch(
+      productsStore,
+      () => {
+        rows.value = createRows(productsStore.products);
+      },
+      { deep: true }
+    )
     const loadOptions = async () => {
       loadingStore.setLoading(true);
       try {
@@ -69,54 +79,7 @@ export default {
       try {
         loadingStore.setLoading(true);
         products.value = await productsStore.fetchProducts();
-        rows.value = products.value.map((product: Product) => ({
-          id: product.id,
-          cells: [
-            {
-              name: "image",
-              type: "image",
-              label: "Kép",
-              value: product.image,
-            },
-            {
-              name: "brand",
-              type: "text",
-              label: product.brand + " " + product.tread,
-              value: product.brand,
-            },
-            {
-              name: "width",
-              type: "text",
-              label:
-                product.width +
-                " / " +
-                product.profile +
-                " R " +
-                product.diameter,
-              value: product.width,
-            },
-            {
-              name: "price",
-              type: "text",
-              label: product.price,
-              value: product.price,
-              postFix: " Ft",
-            },
-            {
-              name: "stock",
-              type: "text",
-              label: product.stock,
-              value: product.stock,
-            },
-            {
-              name: "action",
-              type: "action",
-              label: "",
-              sortable: false,
-              value: product.id,
-            },
-          ],
-        }));
+        rows.value = createRows(products.value);
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
       } finally {
@@ -134,55 +97,7 @@ export default {
         });
         return result;
       });
-      rows.value = filteredProducts.map((product: Product) => ({
-        id: product.id,
-        cells: [
-          {
-            name: "image",
-            type: "image",
-            label: "Kép",
-            value: product.image,
-          },
-          {
-            name: "brand",
-            type: "text",
-            label: product.brand + " " + product.tread,
-            value: product.brand,
-          },
-          {
-            name: "width",
-            type: "text",
-            label:
-              product.width +
-              " / " +
-              product.profile +
-              " R " +
-              product.diameter,
-            value: product.width,
-          },
-          {
-            name: "price",
-            type: "text",
-            label: product.price,
-            value: product.price,
-            postFix: " Ft",
-          },
-          {
-            name: "stock",
-            type: "text",
-            label: product.stock,
-            value: product.stock,
-          },
-           {
-              name: "action",
-              type: "action",
-              label: "",
-              sortable: false,
-              value: product.id,
-            },
-
-        ],
-      }));
+      rows.value = createRows(filteredProducts);
     };
 
     const header = ref<TableHeader[]>([
@@ -232,7 +147,7 @@ export default {
 
     loadProducts();
 
-    return { rows, header, myFilterOptions, applyFilter };
+    return { rows, header, myFilterOptions, applyFilter,productsStore };
   },
 };
 </script>

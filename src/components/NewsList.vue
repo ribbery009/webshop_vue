@@ -55,8 +55,6 @@ export default {
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
         );
         news.value = sortedNews;
-
-        console.log(loadingStore.isLoading);
       } catch (error) {
         toast.error("Hiba történt a hírek letöltése közben.");
       } finally {

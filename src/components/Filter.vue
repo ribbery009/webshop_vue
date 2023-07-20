@@ -46,7 +46,7 @@
 import { ref, watch, toRefs } from "vue";
 //
 import { getHungarianLabel } from "../lib/utils/getHungarianLabel";
-
+import Button from "./fields/Button.vue";
 
 interface SelectedFilters {
   [key: string]: string;
@@ -59,6 +59,9 @@ export default {
       type: Object,
       default: () => ({}),
     },
+  },
+  components: {
+    Button,
   },
   setup(props, { emit }) {
     const { filterOptions } = toRefs(props);

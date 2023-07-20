@@ -57,7 +57,6 @@ const props = defineProps({
   },
 });
 
-console.log(props.column)
 const cartStore = useCartStore();
 const productsStore = useProductsStore();
 
@@ -90,7 +89,6 @@ const addToCart = async (productId) => {
       diameter: product.diameter,
       price: product.price,
     });
-    console.log(`Product with ID ${productId} added to cart successfully.`);
   } catch (error) {
     console.error("Error while adding product to cart: ", error);
   }

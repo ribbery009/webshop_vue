@@ -44,16 +44,13 @@ export const useCartStore = defineStore("cart", {
     },
     removeProductFromCart(productId: string) {
       const item = this.cartItems.find((item) => item.productId === productId);
-
-      if (item) {
-        if (item.quantity > 1) {
+        if (item && item?.quantity > 1) {
           item.quantity--;
         } else {
           this.cartItems = this.cartItems.filter(
             (item) => item.productId !== productId
           );
         }
-      }
     },
     getQuantity(productId: string) {
       const item = this.cartItems.find((item) => item.productId === productId);
