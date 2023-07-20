@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue';
+import { ref, watchEffect,defineEmits } from 'vue';
 
 const props = defineProps({
   headers: {
@@ -47,6 +47,7 @@ const props = defineProps({
 let sortedColumn = ref(props.currentSortedColumn);
 let isAscending = ref(props.currentIsAscending);
 
+const emit = defineEmits(['sortTable']);
 const sortTable = (columnName) => {
   if (sortedColumn.value === columnName) {
     isAscending.value = !isAscending.value;
